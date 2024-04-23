@@ -1,1 +1,5 @@
--- Write query to find the number of grade A's given by the teacher who has graded the most assignments
+select count(*) as no_a 
+from assignments
+where grade = 'A'
+group by teacher_id
+order by no_a desc limit 1;

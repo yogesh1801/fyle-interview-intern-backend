@@ -11,6 +11,22 @@ def test_get_assignments_student_1(client, h_student_1):
         assert assignment['student_id'] == 1
 
 
+def test_edit_assign(client, h_student_1):
+    response = client.post(
+        '/student/assignments',
+        headers=h_student_1,
+        json={
+            'id': 5,
+            'content': 'This is the edited content'
+        })
+
+    assert response.status_code == 200
+
+    data = response.json['data']
+    assert data['content'] == 'This is the edited content'
+    assert data['state'] == 'DRAFT'
+
+
 def test_get_assignments_student_2(client, h_student_2):
     response = client.get(
         '/student/assignments',
@@ -86,3 +102,4 @@ def test_assignment_resubmit_error(client, h_student_1):
     assert response.status_code == 400
     assert error_response['error'] == 'FyleError'
     assert error_response["message"] == 'only a draft assignment can be submitted'
+
